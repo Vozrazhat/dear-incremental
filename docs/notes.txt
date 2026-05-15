@@ -1,0 +1,3 @@
+Needs to read in the json
+
+Populate the vector of all upgrades
