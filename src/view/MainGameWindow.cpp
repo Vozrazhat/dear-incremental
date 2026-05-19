@@ -11,7 +11,9 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include <cmath>
 #include <format>
+#include <numeric>
 
 namespace DI {
 
@@ -57,9 +59,63 @@ void MainGameWindow::run() {
         {
             ImGui::Begin("Neurons");
             ImGui::Text(std::format("{:.0f}", view_model_.getValue(Resource::NEURONS)).c_str());
-            // if (ImGui::Button("Add 1 to big number")) {
-            //     view_model_.incrementNeurons();
-            // }
+            if (ImGui::Button("BUY MAIN NOW!!!!")) {
+                view_model_.state().debugUpgrade.buy();
+            }
+            ImGui::SameLine();
+            ImGui::Text(std::format("{}", view_model_.state().debugUpgrade.amount()).c_str());
+            if (ImGui::Button("BUY MULT NOW!!!!")) {
+                view_model_.state().debugUpgradeMult.buy();
+            }
+            ImGui::SameLine();
+            ImGui::Text(std::format("{}", view_model_.state().debugUpgradeMult.amount()).c_str());
+            if (ImGui::Button("BUY EXP NOW!!!!")) {
+                view_model_.state().debugUpgradeExp.buy();
+            }
+            ImGui::SameLine();
+            ImGui::Text(std::format("{}", view_model_.state().debugUpgradeExp.amount()).c_str());
+            ImGui::End();
+        }
+
+        // DEBUG INFO
+        {
+            ImGui::Begin("The true function");
+            auto &state = view_model_.state();
+            auto &rs = state.getResourceManager();
+
+            int i{};
+            for (auto &vecarr : rs.vps()) {
+                if (ImGui::TreeNode(std::format("{}", i).c_str())) {
+                    if (ImGui::TreeNode(
+                            std::format("BASE: {}", std::reduce(vecarr[0].begin(), vecarr[0].end()))
+                                .c_str())) {
+                        for (auto &j : vecarr[0])
+                            ImGui::Text(std::format("{}", j).c_str());
+                        ImGui::TreePop(); // Always pop nested nodes
+                    }
+                    if (ImGui::TreeNode(
+                            std::format("MULT: {}",
+                                        std::accumulate(vecarr[1].begin(), vecarr[1].end(), 1.0,
+                                                        std::multiplies<double>()))
+                                .c_str())) {
+                        for (auto &j : vecarr[1])
+                            ImGui::Text(std::format("{}", j).c_str());
+                        ImGui::TreePop(); // Always pop nested nodes
+                    }
+                    if (ImGui::TreeNode(
+                            std::format("EXP: {}",
+                                        std::accumulate(vecarr[2].begin(), vecarr[2].end(), 1.0,
+                                                        std::multiplies<double>()))
+                                .c_str())) {
+                        for (auto &j : vecarr[2])
+                            ImGui::Text(std::format("{}", j).c_str());
+                        ImGui::TreePop(); // Always pop nested nodes
+                    }
+                    ImGui::TreePop(); // Always pop the parent node
+                }
+                ++i;
+            }
+
             ImGui::End();
         }
 

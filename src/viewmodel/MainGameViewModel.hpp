@@ -15,6 +15,10 @@ public:
     // void incrementNeurons(int amount = 1) { state_.incrementNeurons(amount); };
     double getValue(Resource r) { return state_.getValue(r); }
 
+    // This is REALLLY for debug
+    ResourceManager &getResourceManager() { return state_.getResourceManager(); }
+    MainGameState &state() { return state_; }
+
 private:
     MainGameState &state_;
 };

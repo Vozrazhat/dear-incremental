@@ -1,0 +1,9 @@
+Upgrades don't actually need the rm, the handles to the slots are done on init of the functions,
+Otherwise it should store the impacted slot.
+
+Cost function should be a vector of pairs of handle, curve 
+    (allow for multiple resources to be costed)
+impact should be a vector of pairs of handle, curve
+
+UPGRADES HAVE DEPENDENCIES!! Handle that in a manager class lol
+Also some upgrades get impactrefreshed every frame, don't forget! teehee

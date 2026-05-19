@@ -1,5 +1,5 @@
 {
-    "First_Upgrade": {
+    "first_upgrade": {
         "name": "First Upgrade",
         "impact_function": "linear",
         "impact_function_params": {
@@ -18,9 +18,13 @@
             "y": 5.0
         },
         "cost_resource": "neurons",
-        "limit": 0
+        "limit": 0,
+        "dependencies" : {
+            "ids" : [],
+            "amounts" : []
+        }
     },
-    "Test_Upgrade": {
+    "test_upgrade": {
         "name": "Test Upgrade",
         "impact_function": "linear",
         "impact_function_params": {
@@ -29,7 +33,7 @@
             "y": 1.0
         },
         "impact_slot": {
-            "resource": "neurons",
+            "resource": "neurons", 
             "slot": "base"
         },
         "cost_function": "linear",
@@ -39,6 +43,10 @@
             "y": 5.0
         },
         "cost_resource": "neurons",
-        "limit": 0
+        "limit": 0,
+        "dependencies" : {
+            "ids" : ["first_upgrade"],
+            "amounts" : [2]
+        }
     }
 }
