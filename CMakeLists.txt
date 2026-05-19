@@ -25,12 +25,14 @@ file(GLOB DEP_IMGUI_LIST "${CMAKE_CURRENT_SOURCE_DIR}/deps/imgui/*.cpp")
 file(GLOB DEP_GLAD_LIST "${CMAKE_CURRENT_SOURCE_DIR}/deps/glad/src/*.c")
 file(GLOB VIEW_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/view/*.cpp")
 file(GLOB MODEL_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/model/*.cpp")
+file(GLOB UPGRADE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/model/upgrades/*.cpp")
 file(GLOB VIEWMODEL_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/viewmodel/*.cpp")
 set(DEP_IMGUI_BACKENDS "${CMAKE_CURRENT_SOURCE_DIR}/deps/imgui/backends/imgui_impl_glfw.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/deps/imgui/backends/imgui_impl_opengl3.cpp")
 
 add_executable(dear-incremental
     src/main.cpp
     ${VIEW_SOURCES}
+    ${UPGRADE_SOURCES}
     ${MODEL_SOURCES}
     ${VIEWMODEL_SOURCES}
     ${DEP_IMGUI_LIST}

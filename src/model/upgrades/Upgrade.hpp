@@ -1,45 +1,63 @@
 #pragma once
 #include "CurveRegistry.hpp"
-#include "ResourceManager.hpp"
+#include <algorithm>
 #include <string>
 #include <vector>
 
 namespace DI {
-class Upgrade {
-public:
-    Upgrade(ResourceManager &man, std::string name) : rm_(man), name_(name) {
-        reg();
-        refresh();
-    }
-    virtual ~Upgrade() = default;
 
-    virtual std::string name() { return name_; }
-    virtual std::pair<Resource, double> cost() { return cost_; }
-    virtual void buy() {
-        if (canBuy()) {
-            ++amount_;
-            refresh();
-        }
+struct RefboundCurve {
+    std::reference_wrapper<double> value;
+    CurveFunction function;
+    // caches the most recent output of its function
+    double cache{};
+
+    double runFunction() {
+        cache = function();
+        return cache;
     };
-    virtual bool canBuy() { return amount_ < limit_ && rm_.getResourceRef(cost().first) >= cost().second; }
-    virtual int limit() { return limit_; }
-
-    // Refreshes the impacted values and cost.
-    virtual void refresh() = 0;
-    // sets impacted values.
-    virtual void reg() = 0;
-
-protected:
-    // std::string id_{};
-    int limit_{};
-    int amount_{};
-    std::pair<Resource, double> cost_{};
-    std::string name_{};
-    ResourceManager &rm_;
-
-    CurveFunction cost_function_{};
-    CurveFunction impact_function_{};
-    // std::vector<double &> impacted_values_{};
 };
 
+class Upgrade {
+public:
+    Upgrade(std::string id, std::string name, int limit);
+    ~Upgrade() = default;
+
+    std::string name() { return name_; }
+
+    void buy();
+    bool canBuy() const;
+    int limit() const { return limit_; }
+
+    // Refreshes the impacted values and cost.
+    void refreshCost();
+    void refreshImpact();
+
+    void addCost(Resource r, RefboundCurve &rc);
+    void addImpact(ResourceSlot rs, RefboundCurve &rc);
+
+    // info getting
+    const std::vector<ResourceCount> costs() const { return cost_resources_; };
+    const std::vector<ResourceSlot> impacts() const { return impact_resources_; };
+
+    const int &amount() { return amount_; }
+
+protected:
+    std::string id_;
+    std::string name_;
+
+    const int limit_;
+    int amount_{};
+
+    // Actual stuff
+    // The way to do this later is have the manager just keep one FAT vector of these
+    // Then the individual upgrades just have indices into that
+    // That would require up to know it's an updating one or not!
+    std::vector<RefboundCurve> cost_functions_;
+    std::vector<RefboundCurve> impact_functions_;
+
+    // Stored only for info
+    std::vector<ResourceCount> cost_resources_;
+    std::vector<ResourceSlot> impact_resources_;
+};
 } // namespace DI

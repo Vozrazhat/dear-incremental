@@ -1,3 +1,28 @@
 Needs to read in the json
+id : 
+    name -> pretty name
+    impact_function -> style of curve for upgrade's impact
+    impact_function_params -> the inputs to the function
+    impact_slot -> the type of impact
+    cost_function, cost_function_params, same idea
+    cost_resource -> the resource it costs
+    limit -> if 0 unlimited, else limit
+    dependencies -> required upgrades (by ID)
+
+recall all resources are calculated as (b * m) ^ e
+which are the three slots that an upgrade can manipulate
+b is summed, m is multiplicative, e also mult
+
 
 Populate the vector of all upgrades
+(UpgradeHandler class needed)
+which has a set of upgrades, and the json parser (UpgradeFactory)
+MainGameState will then have the UpgradeHandler
+On construction, UpgradeFactory needs to report whether 
+    the upgrade will need to update its value each frame
+This is so UpgradeHandler can tick only the upgrades that need ticking (saves some comp)
+Actually, it might be worth having the upgrade manager handle an array of impactfunctions
+So that they can be loaded in and processed together. Then have the upgrades keep an index to them
+For when they need to update the values? Or be depurchased? Not likely but eh safer to keep them
+
+UI for viewing upgrades! Visible if they are dependency fulfilled

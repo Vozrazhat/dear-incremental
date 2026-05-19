@@ -8,24 +8,25 @@
 namespace DI {
 
 // NOTE THAT IF THIS IS CONSTRUCTED WITH A REFERENCE THAT REF BETTER OUTLIVE IT AND ANY LAMBDAS USING IT
-using Param = std::variant<double, std::reference_wrapper<double>>;
+using Param =
+    std::variant<double, std::reference_wrapper<const double>, std::reference_wrapper<const int>>;
 // Packed pretty arbitrarily. It can be used freely.
 struct CurveParams {
-    Param n;
-    Param x;
-    Param y;
-    Param z;
+    const Param n;
+    const Param x;
+    const Param y;
+    const Param z;
 
-    double getN() const {
+    const double getN() const {
         return std::visit([](auto &d) -> double { return d; }, n);
     }
-    double getX() const {
+    const double getX() const {
         return std::visit([](auto &d) -> double { return d; }, x);
     }
-    double getY() const {
+    const double getY() const {
         return std::visit([](auto &d) -> double { return d; }, y);
     }
-    double getZ() const {
+    const double getZ() const {
         return std::visit([](auto &d) -> double { return d; }, z);
     }
 };
@@ -41,7 +42,9 @@ public:
     CurveRegistry() { registerBuiltins(); }
     ~CurveRegistry() = default;
 
-    void registerCurve(std::string name, CurveFunctionGenerator &cf) { cf_map_["name"] = std::move(cf); }
+    void registerCurve(std::string name, CurveFunctionGenerator &cf) {
+        cf_map_[name] = std::move(cf);
+    }
     CurveFunction generateCurve(std::string name, CurveParams &params) { return getCurveGenerator(name)(params); }
     // This'll just throw the damn error if it can't get it. IDGAF. Do I ever use this?
     CurveFunctionGenerator &getCurveGenerator(std::string name) { return cf_map_.at(name); }
