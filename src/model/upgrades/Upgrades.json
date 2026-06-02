@@ -1,5 +1,6 @@
 {
     "first_upgrade": {
+        "id": "first_upgrade",
         "name": "First Upgrade",
         "impact_function": "linear",
         "impact_function_params": {
@@ -25,6 +26,7 @@
         }
     },
     "test_upgrade": {
+        "id": "test_upgrade",
         "name": "Test Upgrade",
         "impact_function": "linear",
         "impact_function_params": {

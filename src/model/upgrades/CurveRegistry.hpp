@@ -31,6 +31,17 @@ struct CurveParams {
     }
 };
 
+using CurveFunction = std::function<double()>;
+using CurveFunctionGenerator = std::function<CurveFunction(CurveParams &)>;
+
+namespace CurveRegistry {
+const std::unordered_map<std::string, CurveFunctionGenerator> &registry();
+CurveFunction generate(const std::string &name, CurveParams &params) {
+    return registry().at(name)(params);
+}
+} // namespace CurveRegistry
+
+/* Depricating this in favor of a simple map and generator.
 // This is a function for generating functions
 // has a particular shape and the function it spits out has the params stored.
 using CurveFunction = std::function<double()>;
@@ -45,7 +56,8 @@ public:
     void registerCurve(std::string name, CurveFunctionGenerator &cf) {
         cf_map_[name] = std::move(cf);
     }
-    CurveFunction generateCurve(std::string name, CurveParams &params) { return getCurveGenerator(name)(params); }
+    CurveFunction generateCurve(std::string name, CurveParams &params) { return
+getCurveGenerator(name)(params); }
     // This'll just throw the damn error if it can't get it. IDGAF. Do I ever use this?
     CurveFunctionGenerator &getCurveGenerator(std::string name) { return cf_map_.at(name); }
     // CurveFunctionGenerator &operator[](std::string name) { return getCurveGenerator(name); }
@@ -54,5 +66,5 @@ private:
     std::unordered_map<std::string, CurveFunctionGenerator> cf_map_{};
     void registerBuiltins();
 };
-
+*/
 } // namespace DI

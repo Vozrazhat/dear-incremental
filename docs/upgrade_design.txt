@@ -7,3 +7,23 @@ impact should be a vector of pairs of handle, curve
 
 UPGRADES HAVE DEPENDENCIES!! Handle that in a manager class lol
 Also some upgrades get impactrefreshed every frame, don't forget! teehee
+
+Upgrade Manager:
+Construct upgrades from JSON (using a parser class : UpgradeFactory)
+Store two arrays of upgrades:
+    Doesn't need ticking every frame <- only needs update on amount
+    Does need ticking every frame <- needs update on other resource
+Update first list on every buy (prolly just do this for all upgrades)
+Update second list on every process cycle
+Handles if upgrades are visible (dependencies)
+
+For dependencies:
+    Store each upgrade id in a map
+        map<upg_id, vector<upg>>
+    on first purchase of an id, remove 1 from dep count for upg in vector<upg>
+    But then we lose the info...
+
+NEXT:
+Figure out what the hell to do with the factory. 
+At the moment its static only but it kind needs both resource manager and curve reg
+Thought it would be fine to pass rm alone, but forgot about the reg...

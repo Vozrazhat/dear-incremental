@@ -2,9 +2,9 @@
 #include <spdlog/spdlog.h>
 
 namespace DI {
-MainGameState::MainGameState() {
+MainGameState::MainGameState() : upgrade_manager(resource_manager_) {
 
-    // DEBUG
+    // DEBUG -> SEND THIS TO THE UPGRADE MANAGER
     CurveRegistry reg{};
 
     // debugUpgrade = Upgrade("test", "testname", 0);

@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "ResourceManager.hpp"
+#include "upgrades/UpgradeManager.hpp"
 // Debug
 #include "upgrades/CurveRegistry.hpp"
 #include "upgrades/Upgrade.hpp"
@@ -30,6 +31,7 @@ public:
 
 private:
     ResourceManager resource_manager_{};
+    UpgradeManager upgrade_manager;
     double tickspeed_{1.0};
 };
 } // namespace DI
