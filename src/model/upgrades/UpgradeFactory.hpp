@@ -21,7 +21,8 @@ public:
     };
 
 private:
-    static CurveParams getParams(json &j);
+    static CurveParams parseParams(json &j);
+    static ResourceSlot parseResourceSlot(json &j);
 };
 
 } // namespace DI

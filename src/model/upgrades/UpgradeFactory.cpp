@@ -13,9 +13,8 @@ std::pair<Upgrade, bool> UpgradeFactory::createUpgrade(json &j, ResourceManager 
     // CurveParams icp = {upgrade.amount(), 0.0, 1.0, 0.0};
     CurveParams icp = parseParams(j["impact_function_params"]);
     CurveFunction icf = CurveRegistry::generate(j["impact_function"], icp);
+    ResourceSlot irs = parseResourceSlot(j["impact_slot"]);
 
-    // put this into a helper
-    ResourceSlot irs = {Resource::NEURONS, SlotType::BASE};
     double &islot = rm.requestSlot(irs);
     RefboundCurve irc = {islot, icf};
     upgrade.addImpact(irs, irc);
